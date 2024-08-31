@@ -1,0 +1,11 @@
+{
+    "emailInput": "//*[@id='input-4']",
+    "passwordInput": "//*[@id='input-5']",
+    "signInButton": "//*[@id='wd-Authentication-NO_METADATA_ID-uid6']/div/div[1]/div/form/div[3]/div/div/div/div/div",
+    "createAccountButton": "//*[@id='wd-Authentication-NO_METADATA_ID-uid6']/div/div[1]/div/div[2]/button",
+    "newAccountEmail": "//*[@id='input-6']",
+    "newAccountPassword": "//*[@id='input-7']",
+    "newAccountConfirmPassword": "//*[@id='input-8']",
+    "agreeCheckbox": "//*[@id='wd-Authentication-NO_METADATA_ID-uid6']/div/div[1]/div/form/div[5]/div/div/div[1]/div/label",
+    "submitCreateAccount": "//*[@id='wd-Authentication-NO_METADATA_ID-uid6']/div/div[1]/div/form/div[6]/div/div/div/div/div"
+}

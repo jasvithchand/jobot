@@ -1,4 +1,13 @@
 {
     "email": "abc@gmail.com",
-    "password": "xyz"
+    "password": "xyz",
+    "Country": "United States of America",
+    "FirstName": "John",
+    "LastName": "Doe",
+    "AddressLine1": "123 Main St",
+    "City": "Gotham City",
+    "State": "Arizona",
+    "PostalCode": "12345",
+    "PhoneDeviceType": "Home",
+    "PhoneNumber": "6027607907"
 }

@@ -7,5 +7,18 @@
     "newAccountPassword": "//*[@id='input-7']",
     "newAccountConfirmPassword": "//*[@id='input-8']",
     "agreeCheckbox": "//*[@id='wd-Authentication-NO_METADATA_ID-uid6']/div/div[1]/div/form/div[5]/div/div/div[1]/div/label",
-    "submitCreateAccount": "//*[@id='wd-Authentication-NO_METADATA_ID-uid6']/div/div[1]/div/form/div[6]/div/div/div/div/div"
+    "submitCreateAccount": "//*[@id='wd-Authentication-NO_METADATA_ID-uid6']/div/div[1]/div/form/div[6]/div/div/div/div/div",
+    "countryDropdown": "//*[@id='input-3']",
+    "countryOption": "//li[@role='option']//div[contains(text(), '{country}')]",
+    "inputFirstName": "//*[@id='input-4']",
+    "inputLastName": "//*[@id='input-5']",
+    "inputAddress1": "//*[@id='input-7']",
+    "inputCity": "//*[@id='input-8']",
+    "stateDropdown": "//*[@id='input-9']",
+    "stateOption": "//li[@role='option']//div[contains(text(), '{state}')]",
+    "inputPostalcode": "//*[@id='input-10']",
+    "deviceTypeDropdown": "//*[@id='input-12']",
+    "deviceTypeOption": "//li[@role='option']//div[contains(text(), '{device_type}')]",
+    "inputPhoneNumber": "//*[@id='input-14']",
+    "myInformationSubmit": "//*[@id='mainContent']/div/div[5]/div/ul/div/div/div/button"
 }

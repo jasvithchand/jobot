@@ -5,42 +5,187 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
 import time
 
 # Function to handle actions specific to "My Information" step
+def handle_how_did_you_hear(driver):
+    """Handle the 'How Did You Hear About Us?' field by directly entering 'LinkedIn Jobs' and pressing Enter."""
+    try:
+        # Wait for the field to be clickable
+        hear_about_us_field = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="input-1"]'))
+        )
+
+        # Clear the field (in case there's any default value)
+        hear_about_us_field.clear()
+
+        # Directly enter "LinkedIn Jobs"
+        hear_about_us_field.send_keys("LinkedIn Jobs")
+        print("Entered 'LinkedIn Jobs' into 'How Did You Hear About Us?' field")
+
+        # Press Enter to lock in the value
+        hear_about_us_field.send_keys(Keys.RETURN)
+        print("Pressed Enter to lock in the value")
+
+        # Click elsewhere on the page to lose focus
+        body = driver.find_element(By.TAG_NAME, 'body')
+        body.click()
+        print("Clicked elsewhere to lose focus")
+
+    except TimeoutException as e:
+        print(f"Timeout occurred while handling 'How Did You Hear About Us?' field: {e}")
+    except Exception as e:
+        print(f"An error occurred while handling 'How Did You Hear About Us?' field: {e}")
+
+
 def handle_my_information_step(driver):
     """Handle form filling in the 'My Information' step."""
     try:
+        # Handle 'How Did You Hear About Us?' field
+        handle_how_did_you_hear(driver)
+
+        # previously_worked_no = WebDriverWait(driver, 10).until(
+        #     EC.element_to_be_clickable((By.XPATH, '//*[@id="2"]'))
+        # )
+        # previously_worked_no.click()
+        # print("Clicked 'Previously worked' No option")
+
+        # Open the country dropdown using the XPath from the JSON file
+        country_dropdown = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['countryDropdown']))
+        )
+        country_dropdown.click()
+        print("Country dropdown opened.")
+
+        # Format the country option XPath with the country from the JSON file and select it
+        country_option_xpath = xpaths['countryOption'].replace('{country}', user_data['Country'])
+        country_option = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, country_option_xpath))
+        )
+        country_option.click()
+        print(f"{user_data['Country']} selected.")
+
+        # # Wait for the selection to be reflected in the input
+        # WebDriverWait(driver, 10).until(
+        #     EC.text_to_be_present_in_element_value((By.XPATH, '//*[@id="input-3"]'), "United States of America")
+        # )
+        # print("Confirmed 'United States of America' is selected")
+
+        # Handle FirstName
+        first_name_field = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputFirstName']))
+        )
+        first_name_field.clear()
+        first_name_field.send_keys(user_data['FirstName'])
+        print("Entered FirstName")
+
+        # Handle LastName
+        last_name_field = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputLastName']))
+        )
+        last_name_field.clear()
+        last_name_field.send_keys(user_data['LastName'])
+        print("Entered LastName")
+
+        # Handle Address Line 1
+        address_line_1_field = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputAddress1']))
+        )
+        address_line_1_field.clear()
+        address_line_1_field.send_keys(user_data['AddressLine1'])
+        print("Entered Address Line 1")
+
+        # Handle City
+        city_field = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCity']))
+        )
+        city_field.clear()
+        city_field.send_keys(user_data['City'])
+        print("Entered City")
+
+        #Handle State
+        # Open the state dropdown
+        state_dropdown = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['stateDropdown']))
+        )
+        state_dropdown.click()
+        print("State dropdown clicked")
+
+        # Wait for the state option to be visible
+        state_to_select = user_data['State']  # Make sure 'State' is correctly named in userinfo.json
+        state_option_xpath = xpaths['stateOption'].replace('{state}', state_to_select)
+        state_option = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, state_option_xpath))
+        )
+
+        # Click the state option
+        driver.execute_script("arguments[0].scrollIntoView();", state_option)
+        state_option.click()
+        print(f"Selected state: {state_to_select}")
+
+        # Handle Postal Code
+        postal_code_field = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputPostalcode']))
+        )
+        postal_code_field.clear()
+        postal_code_field.send_keys(user_data['PostalCode'])
+        print("Entered Postal Code")
+
+        # Click the device type dropdown to open it
+        device_dropdown = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['deviceTypeDropdown']))
+        )
+        device_dropdown.click()
+        print("Device type dropdown clicked")
+
+        # Wait for the device type option to be visible
+        device_type = user_data['PhoneDeviceType']  # Ensure this key exists in userinfo.json
+        device_option_xpath = xpaths['deviceTypeOption'].replace('{device_type}', device_type)
+        device_option = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, device_option_xpath))
+        )
+
+        # Click the device type option
+        driver.execute_script("arguments[0].scrollIntoView();", device_option)
+        device_option.click()
+        print(f"Selected device type: {device_type}")
+
+        # Handle Phone Number
+        phone_number_field = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputPhoneNumber']))
+        )
+        phone_number_field.clear()
+        phone_number_field.send_keys(user_data['PhoneNumber'])
+        print("Entered Phone Number Code")
+
+        # Click on "Save and Continue"
+        save_and_continue_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['myInformationSubmit']))
+        )
+        save_and_continue_button.click()
+        print("Clicked 'Save and Continue' button.")
+
+        # Ensure navigation to the next step
         WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, '//*[@id="input-1"]'))
+            EC.visibility_of_element_located((By.XPATH, '//*[contains(text(), "My Experience")]'))
         )
-        source_input = driver.find_element(By.XPATH, '//*[@id="input-1"]')
-        source_input.send_keys("Linkedin Jobs")
-        print("Filled 'Source' input")
+        print("Navigated to 'My Experience' step.")
 
-        previously_worked_no = driver.find_element(By.XPATH, '//*[@id="2"]')
-        previously_worked_no.click()
-        print("Clicked 'Previously worked' No option")
 
-        dropdown = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//*[@id="input-3"]'))
-        )
-        dropdown.click()
-        print("Clicked country dropdown")
 
-        option = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[@role='option' and contains(text(), 'United States of America')]"))
-        )
-        option.click()
-        print("Selected 'United States of America' from dropdown")
 
     except TimeoutException as e:
         print(f"Timeout occurred while handling 'My Information' step: {e}")
     except NoSuchElementException as e:
         print(f"Element not found while handling 'My Information' step: {e}")
+    except ElementClickInterceptedException as e:
+        print(f"Element click was intercepted: {e}")
     except Exception as e:
         print(f"An error occurred while handling 'My Information' step: {e}")
+
+
 
 # Function to handle the account creation process
 def handle_failed_login(driver):
@@ -124,5 +269,5 @@ except Exception as e:
 
 finally:
     # Optionally keep the browser open for debugging
-    time.sleep(20)
+    time.sleep(40)
     driver.quit()

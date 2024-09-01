@@ -9,6 +9,204 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
 import time
 
+#Function to handle My experience Page
+def handle_my_experience_step(driver):
+    """Handles interactions in the 'My Experience' section."""
+
+    try:
+        # Click on "Add" in Work Experience
+        add_experience_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['addExperienceButton']))
+        )
+        add_experience_button.click()
+        print("Clicked 'Save and Continue' button.")
+
+    except NoSuchElementException:
+        pass
+
+    #Enter Work Experience 01 - Job Title
+    try:
+        jobTitle01 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputJobTitle01']))
+        )
+        jobTitle01.clear()
+        jobTitle01.send_keys(user_data['JobTitle01'])
+        print("Entered JobTitle01")
+
+    except NoSuchElementException:
+        pass
+
+    # Enter Company Name
+    try:
+        company01 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompany01']))
+        )
+        company01.clear()
+        company01.send_keys(user_data['Company01'])
+        print("Entered Company01.")
+    except NoSuchElementException:
+        print("Company field not found.")
+        pass
+
+    # Enter Location
+    try:
+        location01 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyLocation01']))
+        )
+        location01.clear()
+        location01.send_keys(user_data['Location01'])
+        print("Entered Location01.")
+    except NoSuchElementException:
+        print("Location field not found.")
+        pass
+
+    # Check "I currently work here"
+    try:
+        # Wait for any known obstructions to disappear
+        WebDriverWait(driver, 20).until(
+            EC.invisibility_of_element((By.CSS_SELECTOR, "div.some-overlay"))
+        )
+        # Now try clicking the checkbox
+        checkbox = driver.find_element(By.ID, "input-22")
+        driver.execute_script("arguments[0].click();", checkbox)
+    except NoSuchElementException:
+        print("Current work checkbox not found.")
+        pass
+
+    # Enter "From Date Month"
+    try:
+        fromDateMonth01 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyFromMonth01']))
+        )
+        fromDateMonth01.clear()
+        fromDateMonth01.send_keys(user_data['FromMonth01'])
+        print("Entered FromMonth01.")
+    except NoSuchElementException:
+        print("From Date field not found.")
+        pass
+
+    # Enter "From Date Year"
+    try:
+        fromDateYear01 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyFromYear01']))
+        )
+        fromDateYear01.clear()
+        fromDateYear01.send_keys(user_data['FromYear01'])
+        print("Entered FromYear01.")
+    except NoSuchElementException:
+        print("From Date field not found.")
+        pass
+
+    # Enter Role Description - Assuming you have a field and data for this
+    try:
+        roleDescription01 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputRoleDescription01']))  # Ensure this XPath is defined in xpaths.json
+        )
+        roleDescription01.clear()
+        roleDescription01.send_keys(user_data['RoleDescription01'])
+        print("Entered Role Description01.")
+    except NoSuchElementException:
+        print("Role Description field not found.")
+        pass
+
+    #Click Add Another
+    try:
+        add_anotherexp_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['addAnotherExperienceButton']))
+        )
+        add_anotherexp_button.click()
+        print("Clicked 'Add Another' button in Experience.")
+
+    except NoSuchElementException:
+        pass
+
+    time.sleep(2)
+
+    #Enter Work Experience 02 - Job Title
+    try:
+        jobTitle02 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputJobTitle02']))
+        )
+        jobTitle02.clear()
+        jobTitle01.send_keys(user_data['JobTitle02'])
+        print("Entered JobTitle02")
+
+    except NoSuchElementException:
+        pass
+
+    # Enter Company Name
+    try:
+        company02 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompany02']))
+        )
+        company02.clear()
+        company02.send_keys(user_data['Company02'])
+        print("Entered Company02.")
+    except NoSuchElementException:
+        print("Company field not found.")
+        pass
+
+    # Enter Location
+    try:
+        location02 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyLocation02']))
+        )
+        location02.clear()
+        location02.send_keys(user_data['Location02'])
+        print("Entered Location02.")
+    except NoSuchElementException:
+        print("Location field not found.")
+        pass
+
+    # Enter "From Date Month"
+    try:
+        fromDateMonth02 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyFromMonth02']))
+        )
+        fromDateMonth02.clear()
+        fromDateMonth02.send_keys(user_data['FromMonth02'])
+        print("Entered FromMonth02.")
+    except NoSuchElementException:
+        print("From Date field not found.")
+        pass
+
+    # Enter "From Date Year"
+    try:
+        fromDateYear02 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyFromYear02']))
+        )
+        fromDateYear02.clear()
+        fromDateYear02.send_keys(user_data['FromYear02'])
+        print("Entered FromYear02.")
+    except NoSuchElementException:
+        print("From Date field not found.")
+        pass
+
+    # Enter "To Date Month"
+    try:
+        toDateMonth02 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanytoMonth02']))
+        )
+        toDateMonth02.clear()
+        toDateMonth02.send_keys(user_data['toMonth02'])
+        print("Entered toMonth02.")
+    except NoSuchElementException:
+        print("From Date field not found.")
+        pass
+
+    # Enter "To Date Year"
+    try:
+        toDateYear02 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanytoYear02']))
+        )
+        toDateYear02.clear()
+        toDateYear02.send_keys(user_data['toYear02'])
+        print("Entered toYear02.")
+    except NoSuchElementException:
+        print("From Date field not found.")
+        pass
+
+
 # Function to handle actions specific to "My Information" step
 def handle_how_did_you_hear(driver):
     """Handle the 'How Did You Hear About Us?' field by directly entering 'LinkedIn Jobs' and pressing Enter."""
@@ -40,7 +238,6 @@ def handle_how_did_you_hear(driver):
         print(f"Timeout occurred while handling 'How Did You Hear About Us?' field: {e}")
     except Exception as e:
         print(f"An error occurred while handling 'How Did You Hear About Us?' field: {e}")
-
 
 def handle_my_information_step(driver):
     """Handle form filling in the 'My Information' step."""
@@ -188,7 +385,7 @@ def handle_my_information_step(driver):
         )
         print("Navigated to 'My Experience' step.")
 
-
+        handle_my_experience_step(driver)
 
 
     except TimeoutException as e:
@@ -271,6 +468,11 @@ try:
         handle_my_information_step(driver)
     else:
         print(f"Unexpected step: {current_step}")
+
+    # Update current application step
+    current_step_header = driver.find_element(By.XPATH, '//*[@id="mainContent"]/div/div[3]/h2')
+    current_step = current_step_header.text
+    print(current_step)
 
 except TimeoutException as e:
     print(f"Timeout occurred: {e}")

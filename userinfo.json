@@ -9,5 +9,19 @@
     "State": "Arizona",
     "PostalCode": "12345",
     "PhoneDeviceType": "Home",
-    "PhoneNumber": "6027607907"
+    "PhoneNumber": "6027607907",
+    "JobTitle01": "Software Engineer",
+    "Company01": "CVS health",
+    "Location01": "Scottsdale",
+    "FromMonth01": "01",
+    "FromYear01": "2024",
+    "RoleDescription01": "● Developed automation tools that park unused clusters on weekends, saving $800,000 annually.\n● Created a central automation platform to streamline processes, including automated SNOW CTASK creation for\ndeployments.\n● Implemented an internal tool for direct Vault upgrades, reducing manual ticket handling and improving efficiency.\n● Engaged in on-call rotations playing a key role in postmortem analysis and applying insights to prevent future\noccurrences of similar issues.",
+    "JobTitle02": "Software Engineer Intern",
+    "Company02": "Tata Consultancy Services",
+    "Location02": "Hyderabad",
+    "FromMonth02": "03",
+    "FromYear02": "2021",
+    "toMonth02": "03",
+    "toYear02": "2021",
+    "RoleDescription02": "● Collaborated an application that reads e-Pub files and ingest the content into searchable format.\n● Processed and indexed 1,000+ e-Pub files, enabling users to easily access and search content across multiple\nplatforms."
 }

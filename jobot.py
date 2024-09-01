@@ -20,45 +20,107 @@ def handle_my_experience_step(driver):
         )
         add_experience_button.click()
         print("Clicked 'Save and Continue' button.")
-
     except NoSuchElementException:
         pass
 
-    #Enter Work Experience 01 - Job Title
+    time.sleep(2)
+    #Click Add Another Work Experience
     try:
-        jobTitle01 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputJobTitle01']))
+        button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "button[aria-label='Add Another Work Experience']"))
         )
-        jobTitle01.clear()
-        jobTitle01.send_keys(user_data['JobTitle01'])
-        print("Entered JobTitle01")
+        driver.execute_script("arguments[0].click();", button)
+        print("Clicked 'Add Another' button in Experience.")
 
-    except NoSuchElementException:
+    except (NoSuchElementException,TimeoutException):
+        print("Add Another Work Experience button not found")
         pass
 
-    # Enter Company Name
-    try:
-        company01 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompany01']))
-        )
-        company01.clear()
-        company01.send_keys(user_data['Company01'])
-        print("Entered Company01.")
-    except NoSuchElementException:
-        print("Company field not found.")
-        pass
+    time.sleep(1)
 
-    # Enter Location
-    try:
-        location01 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyLocation01']))
-        )
-        location01.clear()
-        location01.send_keys(user_data['Location01'])
-        print("Entered Location01.")
-    except NoSuchElementException:
-        print("Location field not found.")
-        pass
+
+    def enter_work_experience_details(driver):
+        try:
+            # Fetch all inputs for job titles, company, location, and role descriptions based on their data-automation-id
+            job_titles = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "input[data-automation-id='jobTitle']"))
+            )
+            companies = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "input[data-automation-id='company']"))
+            )
+            locations = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "input[data-automation-id='location']"))
+            )
+            role_descriptions = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "textarea[data-automation-id='description']"))
+            )
+            from_months = WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "input[data-automation-id='dateSectionMonth-input']"))
+            )
+            from_years = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "input[data-automation-id='dateSectionYear-input']"))
+            )
+
+            # Iterate over each set of fields found
+            for index, (job_title_input, company_input, location_input, role_description_input) in enumerate(
+                zip(job_titles, companies, locations, role_descriptions), start=1):
+
+                # Job Title
+                job_title_key = f"JobTitle{index:02}"
+                if job_title_key in user_data:
+                    job_title_input.clear()
+                    job_title_input.send_keys(user_data[job_title_key])
+                    print(f"Entered {user_data[job_title_key]} for Job Title {index}.")
+
+                # Company
+                company_key = f"Company{index:02}"
+                if company_key in user_data:
+                    company_input.clear()
+                    company_input.send_keys(user_data[company_key])
+                    print(f"Entered {user_data[company_key]} for Company {index}.")
+
+                # Location
+                location_key = f"Location{index:02}"
+                if location_key in user_data:
+                    location_input.clear()
+                    location_input.send_keys(user_data[location_key])
+                    print(f"Entered {user_data[location_key]} for Location {index}.")
+
+                # Role Description
+                description_key = f"RoleDescription{index:02}"
+                if description_key in user_data:
+                    role_description_input.clear()
+                    role_description_input.send_keys(user_data[description_key])
+                    print(f"Entered {user_data[description_key]} for Role Description {index}.")
+            
+            for i in range(0, len(from_months)):
+                index = i // 2 + 1  # Determine which work experience entry we are dealing with based on the index
+                month_key = f"FromMonth{index:02}"
+                year_key = f"FromYear{index:02}"
+
+                # Enter "From" dates
+                if month_key in user_data and year_key in user_data:
+                    from_months[i].clear()
+                    from_months[i].send_keys(user_data[month_key])
+                    from_years[i].clear()
+                    from_years[i].send_keys(user_data[year_key])
+                    print(f"Entered 'From' dates for experience {index}: {user_data[month_key]}/{user_data[year_key]}")
+
+                # Check if 'To' dates need to be entered
+                to_month_key = f"toMonth{index:02}"
+                to_year_key = f"toYear{index:02}"
+                # Ensure there is a corresponding 'To' month/year field and user data provides the 'To' info
+                if to_month_key in user_data and to_year_key in user_data and (i+1 < len(from_months)):
+                    from_months[i+1].clear()
+                    from_months[i+1].send_keys(user_data[to_month_key])
+                    from_years[i+1].clear()
+                    from_years[i+1].send_keys(user_data[to_year_key])
+                    print(f"Entered 'To' dates for experience {index}: {user_data[to_month_key]}/{user_data[to_year_key]}")
+
+        except Exception as e:
+            print(f"An error occurred while entering work experience details: {e}")
+
+    enter_work_experience_details(driver)
 
     # Check "I currently work here"
     try:
@@ -73,114 +135,6 @@ def handle_my_experience_step(driver):
         print("Current work checkbox not found.")
         pass
 
-    # Enter "From Date Month"
-    try:
-        fromDateMonth01 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyFromMonth01']))
-        )
-        fromDateMonth01.clear()
-        fromDateMonth01.send_keys(user_data['FromMonth01'])
-        print("Entered FromMonth01.")
-    except NoSuchElementException:
-        print("From Date field not found.")
-        pass
-
-    # Enter "From Date Year"
-    try:
-        fromDateYear01 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyFromYear01']))
-        )
-        fromDateYear01.clear()
-        fromDateYear01.send_keys(user_data['FromYear01'])
-        print("Entered FromYear01.")
-    except NoSuchElementException:
-        print("From Date field not found.")
-        pass
-
-    # Enter Role Description - Assuming you have a field and data for this
-    try:
-        roleDescription01 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputRoleDescription01']))  # Ensure this XPath is defined in xpaths.json
-        )
-        roleDescription01.clear()
-        roleDescription01.send_keys(user_data['RoleDescription01'])
-        print("Entered Role Description01.")
-    except NoSuchElementException:
-        print("Role Description field not found.")
-        pass
-
-    #Click Add Another
-    try:
-        add_anotherexp_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['addAnotherExperienceButton']))
-        )
-        add_anotherexp_button.click()
-        print("Clicked 'Add Another' button in Experience.")
-
-    except NoSuchElementException:
-        pass
-
-    time.sleep(2)
-
-    #Enter Work Experience 02 - Job Title
-    try:
-        jobTitle02 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputJobTitle02']))
-        )
-        jobTitle02.clear()
-        jobTitle01.send_keys(user_data['JobTitle02'])
-        print("Entered JobTitle02")
-
-    except NoSuchElementException:
-        pass
-
-    # Enter Company Name
-    try:
-        company02 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompany02']))
-        )
-        company02.clear()
-        company02.send_keys(user_data['Company02'])
-        print("Entered Company02.")
-    except NoSuchElementException:
-        print("Company field not found.")
-        pass
-
-    # Enter Location
-    try:
-        location02 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyLocation02']))
-        )
-        location02.clear()
-        location02.send_keys(user_data['Location02'])
-        print("Entered Location02.")
-    except NoSuchElementException:
-        print("Location field not found.")
-        pass
-
-    # Enter "From Date Month"
-    try:
-        fromDateMonth02 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyFromMonth02']))
-        )
-        fromDateMonth02.clear()
-        fromDateMonth02.send_keys(user_data['FromMonth02'])
-        print("Entered FromMonth02.")
-    except NoSuchElementException:
-        print("From Date field not found.")
-        pass
-
-    # Enter "From Date Year"
-    try:
-        fromDateYear02 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanyFromYear02']))
-        )
-        fromDateYear02.clear()
-        fromDateYear02.send_keys(user_data['FromYear02'])
-        print("Entered FromYear02.")
-    except NoSuchElementException:
-        print("From Date field not found.")
-        pass
 
     # Enter "To Date Month"
     try:
@@ -188,23 +142,26 @@ def handle_my_experience_step(driver):
             EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanytoMonth02']))
         )
         toDateMonth02.clear()
+        time.sleep(1)
+        toDateMonth02.send_keys(user_data['toMonth02'])
+        print("Entered toMonth02.")
+    except NoSuchElementException:
+        print("From Date field not found.")
+        pass
+    
+    # Enter "To Date Month"
+    try:
+        toDateMonth02 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanytoMonth02']))
+        )
+        toDateMonth02.clear()
+        time.sleep(1)
         toDateMonth02.send_keys(user_data['toMonth02'])
         print("Entered toMonth02.")
     except NoSuchElementException:
         print("From Date field not found.")
         pass
 
-    # Enter "To Date Year"
-    try:
-        toDateYear02 = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['inputCompanytoYear02']))
-        )
-        toDateYear02.clear()
-        toDateYear02.send_keys(user_data['toYear02'])
-        print("Entered toYear02.")
-    except NoSuchElementException:
-        print("From Date field not found.")
-        pass
 
 
 # Function to handle actions specific to "My Information" step
@@ -271,18 +228,6 @@ def handle_my_information_step(driver):
         ActionChains(driver).move_to_element(usa_option).click().perform()
         print("Selected 'United States of America' from dropdown")
 
-        # # Wait for the selection to be reflected in the input
-        # WebDriverWait(driver, 10).until(
-        #     EC.text_to_be_present_in_element_value((By.XPATH, '//*[@id="input-3"]'), "United States of America")
-        # )
-        # print("Confirmed 'United States of America' is selected")
-
-        # # Wait for the selection to be reflected in the input
-        # WebDriverWait(driver, 10).until(
-        #     EC.text_to_be_present_in_element_value((By.XPATH, '//*[@id="input-3"]'), "United States of America")
-        # )
-        # print("Confirmed 'United States of America' is selected")
-
         # Handle FirstName
         first_name_field = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, xpaths['inputFirstName']))
@@ -291,6 +236,8 @@ def handle_my_information_step(driver):
         first_name_field.send_keys(user_data['FirstName'])
         print("Entered FirstName")
 
+        time.sleep(1)
+
         # Handle LastName
         last_name_field = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, xpaths['inputLastName']))
@@ -298,6 +245,8 @@ def handle_my_information_step(driver):
         last_name_field.clear()
         last_name_field.send_keys(user_data['LastName'])
         print("Entered LastName")
+
+        time.sleep(1)
 
         # Handle Address Line 1
         address_line_1_field = WebDriverWait(driver, 10).until(
@@ -323,12 +272,16 @@ def handle_my_information_step(driver):
         state_dropdown.click()
         print("State dropdown clicked")
 
+        time.sleep(1)
+
         # Wait for the state option to be visible
         state_to_select = user_data['State']  # Make sure 'State' is correctly named in userinfo.json
         state_option_xpath = xpaths['stateOption'].replace('{state}', state_to_select)
         state_option = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, state_option_xpath))
         )
+
+        time.sleep(1)
 
         # Click the state option
         driver.execute_script("arguments[0].scrollIntoView();", state_option)
@@ -350,6 +303,8 @@ def handle_my_information_step(driver):
         )
         device_dropdown.click()
         print("Device type dropdown clicked")
+
+        time.sleep(1)
 
         # Wait for the device type option to be visible
         device_type = user_data['PhoneDeviceType']  # Ensure this key exists in userinfo.json
@@ -447,6 +402,7 @@ try:
     email_input.send_keys(user_data['email'])
     password_input = driver.find_element(By.XPATH, xpaths['passwordInput'])
     password_input.send_keys(user_data['password'])
+    time.sleep(1)
 
     # Click the Sign-In Button
     sign_in_button = driver.find_element(By.XPATH, xpaths['signInButton'])

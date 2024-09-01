@@ -34,6 +34,8 @@ def handle_how_did_you_hear(driver):
         body.click()
         print("Clicked elsewhere to lose focus")
 
+        time.sleep(1)
+
     except TimeoutException as e:
         print(f"Timeout occurred while handling 'How Did You Hear About Us?' field: {e}")
     except Exception as e:
@@ -52,20 +54,31 @@ def handle_my_information_step(driver):
         # previously_worked_no.click()
         # print("Clicked 'Previously worked' No option")
 
-        # Open the country dropdown using the XPath from the JSON file
-        country_dropdown = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, xpaths['countryDropdown']))
-        )
-        country_dropdown.click()
-        print("Country dropdown opened.")
+        time.sleep(1)
 
-        # Format the country option XPath with the country from the JSON file and select it
-        country_option_xpath = xpaths['countryOption'].replace('{country}', user_data['Country'])
-        country_option = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, country_option_xpath))
+        # Click the country dropdown to open it
+        dropdown = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="input-3"]'))
         )
-        country_option.click()
-        print(f"{user_data['Country']} selected.")
+        dropdown.click()
+        print("Clicked country dropdown")
+
+        # Wait for the dropdown options to be visible
+        WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//li[@role='option']//div[contains(text(), 'United States of America')]"))
+        )
+
+        # Find and click the "United States of America" option
+        usa_option = driver.find_element(By.XPATH, "//li[@role='option']//div[contains(text(), 'United States of America')]")
+        driver.execute_script("arguments[0].scrollIntoView();", usa_option)
+        ActionChains(driver).move_to_element(usa_option).click().perform()
+        print("Selected 'United States of America' from dropdown")
+
+        # # Wait for the selection to be reflected in the input
+        # WebDriverWait(driver, 10).until(
+        #     EC.text_to_be_present_in_element_value((By.XPATH, '//*[@id="input-3"]'), "United States of America")
+        # )
+        # print("Confirmed 'United States of America' is selected")
 
         # # Wait for the selection to be reflected in the input
         # WebDriverWait(driver, 10).until(
@@ -124,6 +137,7 @@ def handle_my_information_step(driver):
         driver.execute_script("arguments[0].scrollIntoView();", state_option)
         state_option.click()
         print(f"Selected state: {state_to_select}")
+        time.sleep(1)
 
         # Handle Postal Code
         postal_code_field = WebDriverWait(driver, 10).until(
@@ -151,6 +165,7 @@ def handle_my_information_step(driver):
         driver.execute_script("arguments[0].scrollIntoView();", device_option)
         device_option.click()
         print(f"Selected device type: {device_type}")
+        time.sleep(1)
 
         # Handle Phone Number
         phone_number_field = WebDriverWait(driver, 10).until(
@@ -239,6 +254,7 @@ try:
     # Click the Sign-In Button
     sign_in_button = driver.find_element(By.XPATH, xpaths['signInButton'])
     ActionChains(driver).move_to_element(sign_in_button).click().perform()
+    time.sleep(1)
 
     # Wait for the page to load after login
     WebDriverWait(driver, 20).until(

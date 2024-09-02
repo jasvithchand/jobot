@@ -3,6 +3,8 @@
 
 A script that applies to a job posted on Workdays in one click.
 
+![demo](https://github.com/user-attachments/assets/6053b061-b2ef-4f0a-8999-fb13da51bfd9)
+
 ## What it does
 
 All the user information is stored in the userinfo.json file. It navigates through a series of web pages, and automagically fills out forms based on your predefined settings. It also creates the account if the account doent exist (Whew !). Why do it manually when you can do it automatically?

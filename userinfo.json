@@ -23,5 +23,21 @@
     "FromYear02": "2021",
     "toMonth02": "05",
     "toYear02": "2021",
-    "RoleDescription02": "● Collaborated an application that reads e-Pub files and ingest the content into searchable format.\n● Processed and indexed 1,000+ e-Pub files, enabling users to easily access and search content across multiple\nplatforms."
+    "RoleDescription02": "● Collaborated an application that reads e-Pub files and ingest the content into searchable format.\n● Processed and indexed 1,000+ e-Pub files, enabling users to easily access and search content across multiple\nplatforms.",
+    "skills": ["Python", "React", "Node.js", "OpenCV", "Docker", "Kubernetes", "Cloud Architecture", "AWS", "Jenkins", "Git", "Terraform", "CI/CD", "Selenium"],
+    "resume_path": "./Jasvith-Chand-Anne-Resume.pdf",
+    "website_url": "https://jasvith.me/",
+    "linkedin_url": "https://www.linkedin.com/in/jasvith/",
+    "school_name": "Arizona State University",
+    "degree": "Masters",
+    "from_month": "07",
+    "from_year": "2021",
+    "to_month": "05",
+    "to_year": "2023",
+    "gender": "Male",
+    "visa": "H1B",
+    "race": "Asian",
+    "veteran_status": "No",
+    "disability_status": "No",
+    "language": "English"
 }
